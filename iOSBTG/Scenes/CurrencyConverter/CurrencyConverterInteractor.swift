@@ -9,16 +9,38 @@
 import Foundation
 
 protocol CurrencyConverterBusinessLogic {
-    func fetchAllCurrencies()
+    func fetchGetCurrencies(request: CurrencyConverter.Fetch.Request)
 }
 
 final class CurrencyConverterInteractor: CurrencyConverterBusinessLogic {
     
+    // MARK:  Properties
+    
     var presenter: CurrencyConverterPresentationLogic?
     private var worker: CurrencyConverterWorker?
     
-    func fetchAllCurrencies() {
-        //
+    // MARK: Initializers
+    
+    init (worker: CurrencyConverterWorker = CurrencyConverterWorker()) {
+        self.worker = worker
+    }
+    
+    // MARK: Class Funcitons
+    
+    func fetchGetCurrencies(request: CurrencyConverter.Fetch.Request) {
+        worker?.fetchGetCurrencies(source: request.source, { (data) in
+            switch data {
+            case .success(let result):
+                let response = CurrencyConverter.Fetch.Response(quotes: CurrencyConverterModel(quotes: result.quotes))
+                self.presenter?.renderConvertion(response: response)
+            case .failure(let error):
+                if error == .rede {
+                    self.presenter?.showEmptyState()
+                } else {
+                    self.presenter?.showError(withMessage: error.reason)
+                }
+            }
+        })
     }
     
 }

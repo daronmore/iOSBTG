@@ -10,4 +10,20 @@ import Foundation
 
 final class CurrencyListWorker {
     
+    // MARK:  Properties
+    
+    private let apiClient: CurrencyLiveApiClient
+    
+    // MARK: Initializers
+    
+    init(apiClient: CurrencyLiveApiClient = CurrencyLiveApiClient.shared) {
+        self.apiClient = apiClient
+    }
+    
+    // MARK: Class Funcitons
+    
+    func fetchListCurrencies(_ completion: @escaping (Result<CurrencyListResponse, ResponseError>) -> ()) {
+        apiClient.fetchListCurrencies(completion: completion)
+    }
+    
 }

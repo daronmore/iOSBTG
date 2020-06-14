@@ -9,7 +9,9 @@
 import Foundation
 
 protocol CurrencyConverterPresentationLogic {
+    func renderConvertion(response: CurrencyConverter.Fetch.Response)
     func showError(withMessage message: String)
+    func showEmptyState()
 }
 
 final class CurrencyConverterPresenter: CurrencyConverterPresentationLogic {
@@ -18,5 +20,14 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentationLogic {
     
     func showError(withMessage message: String) {
         viewController?.showErrorAlert(with: message)
+    }
+    
+    func showEmptyState() {
+        viewController?.showEmptyState()
+    }
+    
+    func renderConvertion(response: CurrencyConverter.Fetch.Response) {
+        let viewModel = CurrencyConverter.Fetch.ViewModel(quotes: response.quotes)
+        viewController?.renderConvertion(viewModel: viewModel)
     }
 }

@@ -9,7 +9,9 @@
 import Foundation
 
 protocol CurrencyListPresentationLogic {
+    func showEmptyState()
     func showError(withMessage message: String)
+    func renderCurrenciesList(response: CurrencyList.Fetch.Response)
 }
 
 final class CurrencyListPresenter: CurrencyListPresentationLogic {
@@ -19,4 +21,14 @@ final class CurrencyListPresenter: CurrencyListPresentationLogic {
     func showError(withMessage message: String) {
         viewController?.showErrorAlert(with: message)
     }
+    
+    func showEmptyState() {
+        viewController?.showEmptyState()
+    }
+    
+    func renderCurrenciesList(response: CurrencyList.Fetch.Response) {
+        let viewModel = CurrencyList.Fetch.ViewModel(currencies: response.currencies)
+        viewController?.renderCurrenciesList(viewModel: viewModel)
+    }
+    
 }

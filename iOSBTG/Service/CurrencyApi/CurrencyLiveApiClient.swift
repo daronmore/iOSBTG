@@ -20,12 +20,14 @@ final class CurrencyLiveApiClient: CurrencyApiClient {
         return CurrencyLiveApiClient(configuration: config)
     }()
     
-    fileprivate let defaultParameters = ["access_key" : "864e7197b821f59bc5db86a1d9193d02", "format" : "1", "source" : "USD", "currencies" : ""]
+    //fileprivate let defaultParameters = ["access_key" : "864e7197b821f59bc5db86a1d9193d02", "format" : "1", "source" : "USD", "currencies" : ""]
+    fileprivate let defaultParameters = ["access_key" : "864e7197b821f59bc5db86a1d9193d02"]
+
     
-    func fetchAllCurrencies(completion: @escaping (Result<CurrencyResponse, ResponseError>) -> Void) {
-        let url = Endpoints<CurrencyLiveApiClient>.allCurrencies.url
-        let request = buildRequest(.get, url: url, parameters: defaultParameters)
-        print("Resquest = \(request)")
+    func fetchGetCurrencies(source: String, completion: @escaping (Result<CurrencyResponse, ResponseError>) -> Void) {
+        let url = Endpoints<CurrencyLiveApiClient>.getCurrencies.url
+        let parameter = ["source" : source].merging(defaultParameters, uniquingKeysWith: +)
+        let request = buildRequest(.get, url: url, parameters: parameter)
         session.dataTask(with: request, completionHandler: { data, response, error in
             guard
                 let httpResponse = response as? HTTPURLResponse, httpResponse.hasSuccessStatusCode,
@@ -42,8 +44,27 @@ final class CurrencyLiveApiClient: CurrencyApiClient {
         }).resume()
     }
     
+    func fetchListCurrencies(completion: @escaping (Result<CurrencyListResponse, ResponseError>) -> Void) {
+        let url = Endpoints<CurrencyLiveApiClient>.listCurrencies.url
+        let request = buildRequest(.get, url: url, parameters: defaultParameters)
+        session.dataTask(with: request, completionHandler: { data, response, error in
+            guard
+                let httpResponse = response as? HTTPURLResponse, httpResponse.hasSuccessStatusCode,
+                let data = data
+                else {
+                    completion(Result.failure(ResponseError.rede))
+                    return
+            }
+            guard let decodedResponse = try? JSONDecoder().decode(CurrencyListResponse.self, from: data) else {
+                completion(Result.failure(ResponseError.decoding))
+                return
+            }
+            completion(Result.success(decodedResponse))
+        }).resume()
+    }
+    
     override class var baseURL: String {
-        return "http://apilayer.net/api/live"
+        return "http://apilayer.net/api"
     }
     
 }

@@ -9,6 +9,8 @@
 import UIKit
 
 protocol CurrencyListDisplayLogic: class {
+    func showEmptyState()
+    func renderCurrenciesList(viewModel: CurrencyList.Fetch.ViewModel)
 }
 
 final class CurrencyListViewController: UIViewController {
@@ -23,22 +25,40 @@ final class CurrencyListViewController: UIViewController {
         return indicator
     }()
     
+    private lazy var emptyView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: .plain)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
+    
     private(set) var viewState: ViewState = .loading {
         didSet {
             switch viewState {
             case .loaded:
                 DispatchQueue.main.async {
                     self.loadingIndicator.stopAnimating()
+                    self.tableView.isHidden = false
+                    self.emptyView.alpha = 0.0
                 }
                 break
             case .loading:
                 DispatchQueue.main.async {
                     self.loadingIndicator.startAnimating()
+                    self.tableView.isHidden = true
+                    self.emptyView.alpha = 0.0
                 }
                 break
             case .empty:
                 DispatchQueue.main.async {
                     self.loadingIndicator.stopAnimating()
+                    self.tableView.isHidden = true
+                    self.emptyView.alpha = 1.0
                 }
                 break
             }
@@ -47,6 +67,8 @@ final class CurrencyListViewController: UIViewController {
     
     var interactor: CurrencyListBusinessLogic?
     var router: (NSObjectProtocol & CurrencyListRoutingLogic)?
+    private let reuseIdentifier = "listcell"
+    private var currenciesList: CurrencyList.Fetch.ViewModel?
     
     // MARK: Initializers
     
@@ -54,13 +76,18 @@ final class CurrencyListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         configurator.configure(viewController: self)
         setUpSubViews()
-        setUpConstraints()
-        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         CurrencyListConfigurator.shared.configure(viewController: self)
+    }
+    
+    deinit {
+        currenciesList = nil
     }
     
     // MARK: ViewController life cycle
@@ -75,6 +102,8 @@ final class CurrencyListViewController: UIViewController {
         if viewState != .loaded {
             viewState = .loading
         }
+        currenciesList = nil
+        interactor?.fetchListCurrencies()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,14 +118,21 @@ final class CurrencyListViewController: UIViewController {
     
     private func setUpSubViews() {
         view.addSubview(loadingIndicator)
-    }
-    
-    private func setUpConstraints() {
+        view.addSubview(emptyView)
+        view.addSubview(tableView)
         NSLayoutConstraint.activate([
             loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingIndicator.widthAnchor.constraint(equalToConstant: 35.0),
             loadingIndicator.heightAnchor.constraint(equalToConstant: 35.0),
+            tableView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            tableView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            tableView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            emptyView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
@@ -105,6 +141,42 @@ final class CurrencyListViewController: UIViewController {
 // MARK: - CurrencyListDisplayLogic
 
 extension CurrencyListViewController: CurrencyListDisplayLogic {
+    
+    func renderCurrenciesList(viewModel: CurrencyList.Fetch.ViewModel) {
+        currenciesList = viewModel
+        viewState = .loaded
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func showEmptyState() {
+        viewState = .empty
+    }
+    
+}
+
+// MARK: - CurrencyList TableViewDataSource
+
+extension CurrencyListViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return currenciesList?.currencies.count ?? 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        let currency = currenciesList
+        cell.textLabel?.text = currency?.orderedList[indexPath.row]
+        return cell
+        
+    }
+
+}
+
+// MARK: - CurrencyList TableViewDelegate
+
+extension CurrencyListViewController: UITableViewDelegate {
     
     
 }

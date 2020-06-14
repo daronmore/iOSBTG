@@ -9,15 +9,18 @@
 import Foundation
 
 enum Endpoints<T: CurrencyApiClient> {
-    case allCurrencies
+    case getCurrencies
+    case listCurrencies
 
     var url: URL {
         let path: String
         
         switch self {
-        case .allCurrencies:
-            path = ""
-        }
+        case .getCurrencies:
+            path = "/live"
+        case .listCurrencies:
+            path = "/list"
+        }            
         
         return URL(string: T.baseURL + path) ?? URL(fileURLWithPath: "https://")
     }

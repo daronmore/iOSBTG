@@ -10,14 +10,20 @@ import Foundation
 
 final class CurrencyConverterWorker {
     
+    // MARK:  Properties
+    
     private let apiClient: CurrencyLiveApiClient
+    
+    // MARK: Initializers
     
     init(apiClient: CurrencyLiveApiClient = CurrencyLiveApiClient.shared) {
         self.apiClient = apiClient
     }
     
-    func fetchAllCurrencies(_ completion: @escaping (Result<CurrencyResponse, ResponseError>) -> ()) {
-        apiClient.fetchAllCurrencies(completion: completion)
+    // MARK: Class Funcitons
+    
+    func fetchGetCurrencies(source: String, _ completion: @escaping (Result<CurrencyResponse, ResponseError>) -> ()) {
+        apiClient.fetchGetCurrencies(source: source, completion: completion)
     }
     
 }

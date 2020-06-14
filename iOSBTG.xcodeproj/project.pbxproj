@@ -37,6 +37,11 @@
 		A7299656248EE1B700C0E493 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7299655248EE1B700C0E493 /* Assets.xcassets */; };
 		A7299659248EE1B700C0E493 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7299657248EE1B700C0E493 /* LaunchScreen.storyboard */; };
 		A7299665248EE6FB00C0E493 /* CurrencyConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7299664248EE6FB00C0E493 /* CurrencyConverterViewController.swift */; };
+		A7F9625524942EF8000CFEFA /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F9625424942EF8000CFEFA /* EmptyStateView.swift */; };
+		A7F962572494355D000CFEFA /* CurrencyListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F962562494355D000CFEFA /* CurrencyListModels.swift */; };
+		A7F962592494378C000CFEFA /* CurrencyListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F962582494378C000CFEFA /* CurrencyListResponse.swift */; };
+		A7F9625E24951316000CFEFA /* CurrenciesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F9625D24951316000CFEFA /* CurrenciesListModel.swift */; };
+		A7F9626024966EE3000CFEFA /* CurrencyConverterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F9625F24966EE3000CFEFA /* CurrencyConverterModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +77,11 @@
 		A7299658248EE1B700C0E493 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A729965A248EE1B700C0E493 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = iOSBTG/Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		A7299664248EE6FB00C0E493 /* CurrencyConverterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterViewController.swift; sourceTree = "<group>"; };
+		A7F9625424942EF8000CFEFA /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		A7F962562494355D000CFEFA /* CurrencyListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListModels.swift; sourceTree = "<group>"; };
+		A7F962582494378C000CFEFA /* CurrencyListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListResponse.swift; sourceTree = "<group>"; };
+		A7F9625D24951316000CFEFA /* CurrenciesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesListModel.swift; sourceTree = "<group>"; };
+		A7F9625F24966EE3000CFEFA /* CurrencyConverterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +112,7 @@
 				A714C63A24910566007107E2 /* CurrencyApiClient.swift */,
 				A714C64224910660007107E2 /* CurrencyLiveApiClient.swift */,
 				A714C64424910916007107E2 /* CurrencyResponse.swift */,
+				A7F962582494378C000CFEFA /* CurrencyListResponse.swift */,
 				A714C64624910997007107E2 /* EndPoints.swift */,
 			);
 			path = CurrencyApi;
@@ -137,6 +148,7 @@
 		A714C65A24925DBB007107E2 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				A7F9625C249512FB000CFEFA /* Models */,
 				A714C65B24925DC6007107E2 /* BaseViews */,
 			);
 			path = Shared;
@@ -147,6 +159,7 @@
 			children = (
 				A714C65C24925DEC007107E2 /* MainTabBarViewController.swift */,
 				A714C65E24925E38007107E2 /* MainNavigationController.swift */,
+				A7F9625424942EF8000CFEFA /* EmptyStateView.swift */,
 			);
 			path = BaseViews;
 			sourceTree = "<group>";
@@ -223,8 +236,18 @@
 				A714C6682492680F007107E2 /* CurrencyListRouter.swift */,
 				A714C66A249269B1007107E2 /* CurrencyListWorker.swift */,
 				A714C662249267A9007107E2 /* CurrencyListConfigurator.swift */,
+				A7F962562494355D000CFEFA /* CurrencyListModels.swift */,
 			);
 			path = CurrencyList;
+			sourceTree = "<group>";
+		};
+		A7F9625C249512FB000CFEFA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A7F9625D24951316000CFEFA /* CurrenciesListModel.swift */,
+				A7F9625F24966EE3000CFEFA /* CurrencyConverterModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,9 +327,11 @@
 				A714C65D24925DEC007107E2 /* MainTabBarViewController.swift in Sources */,
 				A714C63B24910566007107E2 /* CurrencyApiClient.swift in Sources */,
 				A714C64324910660007107E2 /* CurrencyLiveApiClient.swift in Sources */,
+				A7F962572494355D000CFEFA /* CurrencyListModels.swift in Sources */,
 				A714C654249185FA007107E2 /* UIViewController+Extensions.swift in Sources */,
 				A714C66124925EC9007107E2 /* CurrencyListViewController.swift in Sources */,
 				A7299665248EE6FB00C0E493 /* CurrencyConverterViewController.swift in Sources */,
+				A7F9626024966EE3000CFEFA /* CurrencyConverterModel.swift in Sources */,
 				A729964D248EE1B600C0E493 /* AppDelegate.swift in Sources */,
 				A714C665249267E6007107E2 /* CurrencyListInteractor.swift in Sources */,
 				A714C63724910518007107E2 /* ResponseError.swift in Sources */,
@@ -319,11 +344,14 @@
 				A714C652249184C9007107E2 /* CurrencyConverterWorker.swift in Sources */,
 				A714C64724910997007107E2 /* EndPoints.swift in Sources */,
 				A714C650249184AF007107E2 /* CurrencyConverterRouter.swift in Sources */,
+				A7F9625524942EF8000CFEFA /* EmptyStateView.swift in Sources */,
+				A7F962592494378C000CFEFA /* CurrencyListResponse.swift in Sources */,
 				A714C64C2491847C007107E2 /* CurrencyConverterPresenter.swift in Sources */,
 				A714C6692492680F007107E2 /* CurrencyListRouter.swift in Sources */,
 				A714C66B249269B1007107E2 /* CurrencyListWorker.swift in Sources */,
 				A714C63524910505007107E2 /* RequestType.swift in Sources */,
 				A714C64E2491848B007107E2 /* CurrencyConverterViewModel.swift in Sources */,
+				A7F9625E24951316000CFEFA /* CurrenciesListModel.swift in Sources */,
 				A714C667249267FD007107E2 /* CurrencyListPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = iOSBTG/Resources/Info.plist;
